@@ -25,10 +25,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WB5-36-dD8">
-                                <rect key="frame" x="0.0" y="64" width="375" height="470"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="426"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="61C-Gn-OEn">
-                                        <rect key="frame" x="10" y="10" width="355" height="450"/>
+                                        <rect key="frame" x="10" y="10" width="355" height="406"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -40,7 +40,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Intensity" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Nr-fD-6q0">
-                                <rect key="frame" x="16" y="562" width="72" height="21"/>
+                                <rect key="frame" x="16" y="518" width="72" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="72" id="KIw-Vv-IFj"/>
                                 </constraints>
@@ -49,13 +49,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="PqC-aM-n7J">
-                                <rect key="frame" x="96" y="558" width="262" height="31"/>
+                                <rect key="frame" x="96" y="514" width="262" height="31"/>
                                 <connections>
                                     <action selector="intensityChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="u5v-Bj-naQ"/>
                                 </connections>
                             </slider>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2oi-Gy-1di">
-                                <rect key="frame" x="16" y="605" width="120" height="44"/>
+                                <rect key="frame" x="16" y="561" width="120" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="55H-xM-Whm"/>
                                     <constraint firstAttribute="width" constant="120" id="PD5-C5-gkS"/>
@@ -66,7 +66,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CSi-0b-Yab">
-                                <rect key="frame" x="300" y="605" width="60" height="44"/>
+                                <rect key="frame" x="300" y="561" width="60" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="3my-Fp-ckc"/>
                                 </constraints>
@@ -95,6 +95,8 @@
                             <constraint firstAttribute="trailingMargin" secondItem="CSi-0b-Yab" secondAttribute="trailing" constant="-1" id="x0q-nA-ohv"/>
                         </constraints>
                     </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="imageView" destination="61C-Gn-OEn" id="9F2-KB-JxF"/>
                         <outlet property="intensity" destination="PqC-aM-n7J" id="fjz-gu-PBf"/>
