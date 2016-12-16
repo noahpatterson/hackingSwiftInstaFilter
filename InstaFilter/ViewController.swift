@@ -15,7 +15,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     var currentImage: UIImage!
     var context: CIContext!
-    var currentFilter: CIFilter!
+    var currentFilter: CIFilter! {
+        didSet {
+            title = currentFilter.name
+        }
+    }
 
     @IBAction func changeFilter() {
         let ac = UIAlertController(title: "Choose filter...", message: nil, preferredStyle: .actionSheet)
@@ -81,6 +85,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func setFilter(_ action: UIAlertAction?) {
         guard currentImage != nil else { return }
+        
         currentFilter = CIFilter(name: action?.title! ?? "CISepiaTone")
         
         let beginImage = CIImage(image: currentImage)
