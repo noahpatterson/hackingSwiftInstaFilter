@@ -11,7 +11,19 @@ import CoreImage
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBOutlet weak var imageView: UIImageView!
+    
+    @IBOutlet weak var intenstiyLabel: UILabel!
     @IBOutlet weak var intensity: UISlider!
+    
+    @IBOutlet weak var radiusLabel: UILabel!
+    @IBOutlet weak var radius: UISlider!
+    
+    @IBOutlet weak var scaleLabel: UILabel!
+    @IBOutlet weak var scale: UISlider!
+    
+    @IBOutlet weak var centerLabel: UILabel!
+    @IBOutlet weak var center: UISlider!
+    
     
     var currentImage: UIImage!
     var context: CIContext!
@@ -20,7 +32,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             title = currentFilter.name
         }
     }
-
+    
     @IBAction func changeFilter() {
         let ac = UIAlertController(title: "Choose filter...", message: nil, preferredStyle: .actionSheet)
         ac.addAction(UIAlertAction(title: "CIBumpDistortion", style: .default, handler: setFilter))
@@ -39,7 +51,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func intensityChanged(_ sender: UISlider) {
-        applyProcessing()
+        applyProcessing(sender)
     }
     
     override func viewDidLoad() {
@@ -89,16 +101,95 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         currentFilter = CIFilter(name: action?.title! ?? "CISepiaTone")
         
+        let keyToSlider = [kCIInputIntensityKey: intensity, kCIInputRadiusKey: radius, kCIInputScaleKey: scale, kCIInputCenterKey: center]
+        let possibleKeys: Set<String> = [kCIInputIntensityKey,kCIInputRadiusKey,kCIInputScaleKey,kCIInputCenterKey]
+        let keys = checkFilterKeys()
+        
+        let keysNotUsed = possibleKeys.symmetricDifference(keys)
+        
+        for key in keysNotUsed {
+            switch key {
+            case kCIInputIntensityKey:
+                intensity.isHidden = true
+                intenstiyLabel.isHidden = true
+            case kCIInputRadiusKey:
+                radius.isHidden = true
+                radiusLabel.isHidden = true
+            case kCIInputScaleKey:
+                scale.isHidden = true
+                scaleLabel.isHidden = true
+            case kCIInputCenterKey:
+                center.isHidden = true
+                centerLabel.isHidden = true
+            default:
+                break
+            }
+
+        }
+        
+        for key in keys {
+            switch key {
+            case kCIInputIntensityKey:
+                intensity.isHidden = false
+                intensity.value = 0.0
+                intenstiyLabel.isHidden = false
+            case kCIInputRadiusKey:
+                radius.isHidden = false
+                radius.value = 0.0
+                radiusLabel.isHidden = false
+            case kCIInputScaleKey:
+                scale.isHidden = false
+                scale.value = 0.0
+                scaleLabel.isHidden = false
+            case kCIInputCenterKey:
+                center.isHidden = false
+                center.value = 0.0
+                centerLabel.isHidden = false
+            default:
+                break
+            }
+        }
+        
         let beginImage = CIImage(image: currentImage)
         currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
         
-        applyProcessing()
+        applyProcessing(keyToSlider[keys.first!]!)
     }
     
-    func applyProcessing() {
-        //not all filters have the same keys, we need to figure out which to assing
+    func checkFilterKeys() -> Set<String> {
         let inputKeys = currentFilter.inputKeys
         
+        var foundKeys = Set<String>()
+        if inputKeys.contains(kCIInputIntensityKey) {
+            foundKeys.insert(kCIInputIntensityKey)
+        }
+        
+        if inputKeys.contains(kCIInputRadiusKey) {
+            foundKeys.insert(kCIInputRadiusKey)
+        }
+        
+        if inputKeys.contains(kCIInputScaleKey) {
+            foundKeys.insert(kCIInputScaleKey)
+        }
+        
+        if inputKeys.contains(kCIInputCenterKey) {
+            foundKeys.insert(kCIInputCenterKey)
+        }
+        return foundKeys
+    }
+    
+    func applyProcessing(_ slider: UISlider?) {
+        //not all filters have the same keys, we need to figure out which to assing
+        //let inputKeys = currentFilter.inputKeys
+        let keyToTag = [0: kCIInputIntensityKey, 1: kCIInputRadiusKey, 2: kCIInputScaleKey, 3: kCIInputCenterKey]
+        let keyToValue: [String:Any] = [kCIInputIntensityKey: intensity.value, kCIInputRadiusKey: radius.value * 200, kCIInputScaleKey: scale.value * 10, kCIInputCenterKey: CIVector(x: currentImage.size.width * CGFloat(center.value), y: currentImage.size.height * CGFloat(center.value))]
+
+        
+        
+         if let sliderKey = slider?.tag, let key = keyToTag[sliderKey] {
+            currentFilter.setValue(keyToValue[key], forKey: key)
+        }
+        /*
         if inputKeys.contains(kCIInputIntensityKey) {
             currentFilter.setValue(intensity.value, forKey: kCIInputIntensityKey)
         }
@@ -114,6 +205,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if inputKeys.contains(kCIInputCenterKey) {
             currentFilter.setValue(CIVector(x: currentImage.size.width / 2, y: currentImage.size.height / 2), forKey: kCIInputCenterKey)
         }
+         */
         // `currentFilter.outputImage!.extent` -- means render all of it
             //-- until this method is called no actual processing is done
         if let cgimg = context.createCGImage(currentFilter.outputImage!, from: currentFilter.outputImage!.extent) {
